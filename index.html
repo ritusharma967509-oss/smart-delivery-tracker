@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>current location active</title>
+    <link rel="stylesheet" href="local.css">
+</head>
+<body>
+    <h1>Delivery tracking System </h1>
+    <div class="box">
+    <input type="text" id="companyName"  placeholder="Company Name">
+    <input type="text" id="deliveryBoy" placeholder="Delivery Boy Name">
+    <input type="text" id="deliveryId" placeholder="Delivery Id">
+    <p>
+        <strong>status : </strong>
+    <span id="status">Pending</span>
+    </p>
+     <button onclick="startDelivery()">Start Delivery Button</button>
+      <button onclick="stopDelivery()">Stop Delivery Button</button>
+       
+    </div>
+<!-- current location -->
+
+    <div class="location-card">
+        <p>Latitude : <span id="latitude"> --</span></p>
+        <p>Longitude : <span id="longitude"> --</span></p>
+        <p>Time : <span id="time">--</span></p>
+    </div>
+<!-- delivery location -->
+ <div class="history-card">
+<h2>Delivery History</h2>
+<table border = "1">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody id="historyBody">
+        
+ </tbody>
+</table>
+</div>
+    <script src="location.js"></script>
+</body>
+</html>
