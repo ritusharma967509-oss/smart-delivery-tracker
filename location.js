@@ -1,189 +1,95 @@
 const companyName = document.getElementById("companyName");
-
-const deliveryBoy  = document.getElementById("deliveryBoy");
-
+const deliveryBoy = document.getElementById("deliveryBoy");
 const deliveryId = document.getElementById("deliveryId");
-
 const status = document.getElementById("status");
-
 const latitude = document.getElementById("latitude");
-
 const longitude = document.getElementById("longitude");
-
 const time = document.getElementById("time");
-
 const historyBody = document.getElementById("historyBody");
 
-//  2. variables
+// Tracking variable
 let tracking = null;
 
-// 3.functions
+// Start Delivery
 function startDelivery() {
-    let name = document.getElementById("companyName").value;
+    let name = companyName.value;
+    let boy = deliveryBoy.value;
+    let id = deliveryId.value;
 
-    let boy = document.getElementById("deliveryBoy").value;
-
-    let Id = document.getElementById("deliveryId").value;
-     
-    if(name==="" || boy==="" || Id===""){
-
-        alert ("Please fill all fields");
-
+    if (name === "" || boy === "" || id === "") {
+        alert("Please fill all fields.");
         return;
-
     }
-    if(tracking !== null){
+
+    if (tracking !== null) {
         alert("Delivery is already running!");
         return;
     }
 
     status.innerText = "Running";
+
     getLocation();
+
     tracking = setInterval(() => {
         getLocation();
     }, 10000);
-
 }
 
+// Stop Delivery
 function stopDelivery() {
+    if (tracking !== null) {
+        clearInterval(tracking);
+        tracking = null;
+    }
 
- clearInterval(tracking);
-
- status.innerText = "Completed";
- 
-alert("Delivery stoped");
+    status.innerText = "Completed";
+    alert("Delivery Stopped");
 }
 
+// Get Current Location
 function getLocation() {
-    if(navigator.geolocation){
-
-        navigator.geolocation.getCurrentPosition(showLocation);
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showLocation, showError);
     } else {
-        alert("Geolocation is not supported .");
+        alert("Geolocation is not supported by this browser.");
     }
 }
 
-function showLocation(position){
-
+// Show Location
+function showLocation(position) {
     let lat = position.coords.latitude;
-
     let lon = position.coords.longitude;
 
     latitude.innerText = lat;
-    longitude.innerText  = lon;
+    longitude.innerText = lon;
 
     let currentTime = new Date().toLocaleTimeString();
 
     time.innerText = currentTime;
+
     historyBody.innerHTML += `
-    <tr>
-    <td>${currentTime}</td>
-    <td>${lat}</td>
-    <td>${lon}</td>
-    <td>${status.innerText}</td>
-    </tr>
+        <tr>
+            <td>${currentTime}</td>
+            <td>${lat}</td>
+            <td>${lon}</td>
+            <td>${status.innerText}</td>
+        </tr>
     `;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const companyName = document.getElementById("companyName");
-
-const deliveryBoy  = document.getElementById("deliveryBoy");
-
-const deliveryId = document.getElementById("deliveryId");
-
-const status = document.getElementById("status");
-
-const latitude = document.getElementById("latitude");
-
-const longitude = document.getElementById("longitude");
-
-const time = document.getElementById("time");
-
-const historyBody = document.getElementById("historyBody");
-
-//  2. variables
-let tracking = null;
-
-// 3.functions
-function startDelivery() {
-    let name = document.getElementById("companyName").value;
-
-    let boy = document.getElementById("deliveryBoy").value;
-
-    let Id = document.getElementById("deliveryId").value;
-     
-    if(name==="" || boy==="" || Id===""){
-
-        alert ("Please fill all fields");
-
-        return;
-
+// Error Handler
+function showError(error) {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            alert("Location permission denied.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("Location unavailable.");
+            break;
+        case error.TIMEOUT:
+            alert("Location request timed out.");
+            break;
+        default:
+            alert("Unknown error occurred.");
     }
-    if(tracking !== null){
-        alert("Delivery is already running!");
-        return;
-    }
-
-    status.innerText = "Running";
-    getLocation();
-    tracking = setInterval(() => {
-        getLocation();
-    }, 10000);
-
-}
-
-function stopDelivery() {
-
- clearInterval(tracking);
-
- status.innerText = "Completed";
- 
-alert("Delivery stoped");
-}
-
-function getLocation() {
-    if(navigator.geolocation){
-
-        navigator.geolocation.getCurrentPosition(showLocation);
-    } else {
-        alert("Geolocation is not supported .");
-    }
-}
-
-function showLocation(position){
-
-    let lat = position.coords.latitude;
-
-    let lon = position.coords.longitude;
-
-    latitude.innerText = lat;
-    longitude.innerText  = lon;
-
-    let currentTime = new Date().toLocaleTimeString();
-
-    time.innerText = currentTime;
-    historyBody.innerHTML += `
-    <tr>
-    <td>${currentTime}</td>
-    <td>${lat}</td>
-    <td>${lon}</td>
-    <td>${status.innerText}</td>
-    </tr>
-    `;
 }
